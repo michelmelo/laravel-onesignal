@@ -15,10 +15,10 @@ class OneSignalServiceProvider extends ServiceProvider
     {
         $configPath = __DIR__ . '/../config/onesignal.php';
 
-        $this->publishes([$configPath => config_path('onesignal.php')]);
+        $this->publishes([$configPath => config_path('onesignal.php')], 'config');
         $this->mergeConfigFrom($configPath, 'onesignal');
 
-        if ( class_exists('Laravel\Lumen\Application') ) {
+        if ($this->app instanceof Laravel\Lumen\Application) {
             $this->app->configure('onesignal');
         }
     }
@@ -40,11 +40,11 @@ class OneSignalServiceProvider extends ServiceProvider
 
             return $client;
         });
+
+        $this->app->alias('onesignal', 'Berkayk\OneSignal\OneSignalClient');
     }
 
     public function provides() {
         return ['onesignal'];
     }
-
-
 }
